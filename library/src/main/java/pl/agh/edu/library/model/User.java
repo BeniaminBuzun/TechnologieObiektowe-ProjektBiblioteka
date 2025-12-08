@@ -1,4 +1,50 @@
 package pl.agh.edu.library.model;
 
+
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Loan> loans = new ArrayList<>();
+
+
+    public User(String firstName, String lastName, String email, String password, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+
+    }
+    public User(){
+
+    };
+    public String toString(){
+        return firstName + " " + lastName;
+    }
+    public Integer getId() {
+        return id;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+
 }
