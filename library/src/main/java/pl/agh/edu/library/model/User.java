@@ -46,5 +46,21 @@ public class User {
     public String getLastName() {
         return lastName;
     }
+    public String getRole(){return role;}
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public void setRole(String role){this.role = role;}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
