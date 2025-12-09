@@ -126,13 +126,58 @@ Response:
 
 
 
+
+
 Model Bazy Danych.
 
-Pole	Typ	Opis
-id	Integer	Klucz główny (generowany automatycznie)
-email	String	Adres e-mail użytkownika
-firstName	String	Imię
-lastName	String	Nazwisko
-password	String	Hasło użytkownika
-role	String	Rola użytkownika (np. USER, ADMIN)
-loans	List<Loan>	Relacja jeden-do-wielu
+
+
+
+Tabela: ```users```
+
+| Pole      | Typ        | Opis                                    |
+| --------- | ---------- | --------------------------------------- |
+| id        | Integer    | Klucz główny (generowany automatycznie) |
+| email     | String     | Adres e-mail użytkownika                |
+| firstName | String     | Imię                                    |
+| lastName  | String     | Nazwisko                                |
+| password  | String     | Hasło użytkownika                       |
+| role      | String     | Rola użytkownika (np. USER, ADMIN)      |
+| loans     | List<Loan> | Relacja jeden-do-wielu                  |
+
+
+Tabela ```reservations```
+| Pole            | Typ     | Opis                          |
+| --------------- | ------- | ----------------------------- |
+| id              | Integer | Klucz główny                  |
+| state           | String  | Status wypożyczenia           |
+| reservationDate | Date    | Data rezerwacji               |
+| loanDate        | Date    | Data rozpoczęcia wypożyczenia |
+| returnDate      | Date    | Data zwrotu                   |
+| user            | User    | Użytkownik wypożyczający      |
+| book            | Book    | Wypożyczona książka           |
+
+
+Tabela ```books```
+| Pole       | Typ           | Opis                 |
+| ---------- | ------------- | -------------------- |
+| id         | Integer       | Klucz główny         |
+| name       | String        | Tytuł książki        |
+| author     | String        | Autor książki        |
+| quantity   | Integer       | Liczba egzemplarzy   |
+| loans      | List<Loan>    | Wypożyczenia książki |
+| categories | Set<Category> | Przypisane kategorie |
+
+
+Tabela ```categories```
+| Pole  | Typ       | Opis                |
+| ----- | --------- | ------------------- |
+| id    | Integer   | Klucz główny        |
+| name  | String    | Nazwa kategorii     |
+| books | Set<Book> | Książki w kategorii |
+
+
+
+
+
+
