@@ -24,9 +24,15 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // Wymagane dla H2 Console
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**").permitAll() // Dostęp do H2 Console
-                        .requestMatchers("/api/**").permitAll() // Dostęp do API bez logowania
-                        .requestMatchers("/**").permitAll() // Dostęp do wszystkiego (frontend, pliki statyczne)
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
+
+                        .requestMatchers("/account/login").permitAll()
+
+//                        .requestMatchers("/**").permitAll()
+
+                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
 
