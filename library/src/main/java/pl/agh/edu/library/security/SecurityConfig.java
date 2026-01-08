@@ -21,12 +21,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // Wymagane dla H2 Console
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/token").permitAll()
-                        .requestMatchers("/api/users").permitAll()
-                        .requestMatchers("/account/login").permitAll()
-
+                        .requestMatchers("/h2-console/**").permitAll() // Dostęp do H2 Console
+                        .requestMatchers("/api/**").permitAll() // Dostęp do API bez logowania
+                        .requestMatchers("/**").permitAll() // Dostęp do wszystkiego (frontend, pliki statyczne)
                         .anyRequest().authenticated()
                 );
 

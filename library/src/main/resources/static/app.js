@@ -6,13 +6,13 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     e.preventDefault();
 
     const payload = {
-        firstName: document.getElementById("regName").value, // Zmienilem na firstName zgodnie z modelem User
+        firstName: document.getElementById("regName").value,
         email: document.getElementById("regEmail").value,
         password: document.getElementById("regPassword").value,
         role: document.getElementById("regRole").value
     };
     
-    const response = await fetch(`${API}/users`, { // Zmienilem endpoint na /users (standardowy POST w UserController)
+    const response = await fetch(`${API}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -27,8 +27,6 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
 
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    //Tymczasowa symulacja logowania, bo backend nie ma endpointu /login
-    //Po prostu pokazujemy dashboard
     const email = document.getElementById("loginEmail").value;
     localStorage.setItem("user", email);
     showDashboard();
@@ -69,6 +67,7 @@ document.getElementById("btnReserve").addEventListener("click", async () => {
     } else {
         alert("Błąd rezerwacji (sprawdź czy ID istnieją)");
     }
+});
 
 document.getElementById("btnLoan").addEventListener("click", async () => {
     const userId = document.getElementById("loanUserId").value;
@@ -111,10 +110,10 @@ async function loadLoans() {
     const response = await fetch(`${API}/loans`);
     if(response.ok) {
         const data = await response.json();
-        // Formatowanie JSONa do czytelnej postaci
         document.getElementById("loansOutput").innerText = JSON.stringify(data, null, 2);
     } else {
         document.getElementById("loansOutput").innerText = "Błąd pobierania listy.";
     }
 }
 
+showDashboard();
