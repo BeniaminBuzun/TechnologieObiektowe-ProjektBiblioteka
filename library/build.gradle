@@ -30,7 +30,23 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j:8.4.0'
     runtimeOnly 'com.h2database:h2'
 
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
 
+    implementation "org.springframework.boot:spring-boot-starter-security"
+
+
+//    aa
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // ---- JWT libs (needed for token generation & parsing) ----
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // or jjwt-gson if preferred
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
 

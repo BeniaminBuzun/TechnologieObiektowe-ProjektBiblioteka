@@ -13,7 +13,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    private String userName;
     private String email;
     private String firstName;
     private String lastName;
@@ -23,9 +23,10 @@ public class User {
     private List<Loan> loans = new ArrayList<>();
 
 
-    public User(String firstName, String lastName, String email, String password, String role) {
+    public User(String firstName, String lastName, String userName, String email, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userName = userName;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -62,5 +63,20 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getUserName() {
+        return userName;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public boolean chekcPassword(String password){
+        return this.password.equals(password);
     }
 }
