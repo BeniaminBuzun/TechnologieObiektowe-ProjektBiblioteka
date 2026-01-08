@@ -76,7 +76,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public boolean chekcPassword(String password){
+    public boolean checkPassword(String password){
         return this.password.equals(password);
     }
+
+	public void addLoan(Loan loan) {
+		loans.add(loan);
+	}
 }
