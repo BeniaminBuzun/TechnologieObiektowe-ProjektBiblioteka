@@ -42,6 +42,17 @@ public class LoanService {
 
     public Loan loanBook(Long userId, Long bookId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        
+        // --- SPRAWDZENIE LIMITU ---
+        long activeLoansCount = user.getLoans().stream()
+                .filter(l -> "LOANED".equals(l.getState()))
+                .count();
+
+        if (activeLoansCount >= 10) {
+            throw new RuntimeException("Osiągnięto limit 10 wypożyczonych książek!");
+        }
+        // --------------------------
+
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
         Loan loan = new Loan();

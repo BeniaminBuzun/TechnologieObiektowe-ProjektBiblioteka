@@ -80,7 +80,16 @@ public class User {
         return this.password.equals(password);
     }
 
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
 	public void addLoan(Loan loan) {
 		loans.add(loan);
+        loan.setUser(this);
 	}
 }
