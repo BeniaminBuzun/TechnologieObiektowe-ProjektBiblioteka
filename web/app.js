@@ -1,4 +1,4 @@
-const API = "http://localhost:8081/api";
+const API = "http://localhost:8081/api/users";
 
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
     e.preventDefault();
