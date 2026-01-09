@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.agh.edu.library.model.Category;
 import pl.agh.edu.library.service.CategoryService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/categories")
 public class CategoryController {
@@ -23,5 +25,10 @@ public class CategoryController {
 	@DeleteMapping("/{id}")
 	public void deleteCategory(@PathVariable Long id) {
 		categoryService.deleteCategory(id);
+	}
+
+	@GetMapping
+	public List<Category> getCategories() {
+		return categoryService.getCategories();
 	}
 }
