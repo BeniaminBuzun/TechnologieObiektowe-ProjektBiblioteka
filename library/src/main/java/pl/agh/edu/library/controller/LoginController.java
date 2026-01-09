@@ -25,7 +25,7 @@ public class LoginController {
     public String addUser(@RequestBody LoginRequestDto loginRequest) {
         if(userRepository.existsByUserName(loginRequest.userName)){
             User user = userRepository.findByUserName(loginRequest.userName);
-            if (user.chekcPassword(loginRequest.password)) {
+            if (user.checkPassword(loginRequest.password)) {
                 return jwtUtil.generateToken(loginRequest.userName);
             }
         }

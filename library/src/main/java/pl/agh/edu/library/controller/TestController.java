@@ -19,12 +19,15 @@ public class TestController {
     }
 
     // public endpoint that issues a token to anyone who asks
-    @GetMapping("/token")
-    public Map<String, String> token(@RequestParam(name = "user", defaultValue = "guest") String user) {
-        String token = jwtUtil.generateToken(user);
-        return Map.of("token", token);
+//    @GetMapping("/token")
+//    public Map<String, String> token(@RequestParam(name = "user", defaultValue = "guest") String user) {
+//        String token = jwtUtil.generateToken(user);
+//        return Map.of("token", token);
+//    }
+    @GetMapping("/admin")
+    public String Admin(){
+        return "admin";
     }
-
     // protected endpoint, requires Authorization: Bearer <token>
     @GetMapping("/secure")
     public Map<String, String> secure(Authentication authentication) {
