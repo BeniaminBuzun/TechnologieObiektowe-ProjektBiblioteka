@@ -1,6 +1,7 @@
 package pl.agh.edu.library.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ public class User {
     private String lastName;
     private String password;
     private String role;
+    
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore //przerywa rekurencje
     private List<Loan> loans = new ArrayList<>();
 
 
@@ -76,7 +79,20 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public boolean chekcPassword(String password){
+    public boolean checkPassword(String password){
         return this.password.equals(password);
     }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+	public void addLoan(Loan loan) {
+		loans.add(loan);
+        loan.setUser(this);
+	}
 }
