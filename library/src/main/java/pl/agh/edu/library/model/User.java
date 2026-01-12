@@ -1,6 +1,7 @@
 package pl.agh.edu.library.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ public class User {
     private String lastName;
     private String password;
     private String role;
+    
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore //przerywa rekurencje
     private List<Loan> loans = new ArrayList<>();
 
 

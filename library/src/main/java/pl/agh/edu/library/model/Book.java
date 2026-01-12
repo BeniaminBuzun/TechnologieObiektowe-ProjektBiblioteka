@@ -1,5 +1,6 @@
 package pl.agh.edu.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,8 +17,11 @@ public class Book {
 	String name;
     String author;
     Integer quantity;
+    
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore //zapobiega rekurencji
     private List<Loan> loans = new ArrayList<>();
+    
     @ManyToMany
     @JoinTable(
             name = "book_categories",

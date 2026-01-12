@@ -56,7 +56,7 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 document.getElementById("btnReserve").addEventListener("click", async () => {
     const userId = document.getElementById("loanUserId").value;
     const bookId = document.getElementById("loanBookId").value;
-    
+
     if(!userId || !bookId) { alert("Podaj User ID i Book ID"); return; }
 
     const response = await fetch(`${API}/loans/reserve?userId=${userId}&bookId=${bookId}`, {
@@ -90,7 +90,7 @@ document.getElementById("btnLoan").addEventListener("click", async () => {
 
 document.getElementById("btnReturn").addEventListener("click", async () => {
     const loanId = document.getElementById("returnLoanId").value;
-    
+
     if(!loanId) { alert("Podaj Loan ID"); return; }
 
     const response = await fetch(`${API}/loans/return/${loanId}`, {
@@ -116,5 +116,5 @@ async function loadLoans() {
     } else {
         document.getElementById("loansOutput").innerText = "Błąd pobierania listy.";
     }
-}
+}});
 
