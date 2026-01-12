@@ -53,4 +53,9 @@ public class BookController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
+	@PostMapping("/{bookId}/categories/{categoryId}")
+	public void addCategory(@PathVariable Long bookId, @PathVariable Long categoryId) {
+		bookService.addCategoryToBook(bookId, categoryId);
+	}
+
 }

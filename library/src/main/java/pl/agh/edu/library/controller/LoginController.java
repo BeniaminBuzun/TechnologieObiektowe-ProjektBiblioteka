@@ -26,7 +26,7 @@ public class LoginController {
         if(userRepository.existsByUserName(loginRequest.userName)){
             User user = userRepository.findByUserName(loginRequest.userName);
             if (user.checkPassword(loginRequest.password)) {
-                return jwtUtil.generateToken(loginRequest.userName,user.getRole());
+                return jwtUtil.generateToken(loginRequest.userName);
             }
         }
         return "wrong username or password";
