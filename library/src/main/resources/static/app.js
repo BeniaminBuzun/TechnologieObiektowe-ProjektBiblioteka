@@ -1,4 +1,4 @@
-console.log("App loaded v6");
+console.log("App loaded v7");
 
 const API = "http://localhost:8081/api";
 const AUTH_API = "http://localhost:8081/account";
@@ -68,7 +68,7 @@ function showDashboard() {
     document.getElementById("dashboard").style.display = "block";
     
     loadAvailableBooks();
-    loadAllBooksForReviews(); // Ładujemy listę do przeglądania recenzji
+    loadAllBooksForReviews();
     loadMyLoans();
 }
 
@@ -103,7 +103,6 @@ async function loadAvailableBooks() {
 }
 
 async function loadAllBooksForReviews() {
-    // Pobieramy wszystkie książki, bo recenzje można czytać nawet dla niedostępnych
     const response = await fetch(`${API}/books`, { headers: getAuthHeaders() });
     if(response.ok) {
         const books = await response.json();
@@ -150,13 +149,37 @@ function renderMyLoans(loans) {
         const bookTitle = loan.book ? loan.book.name : "Nieznana książka";
         const bookId = loan.book ? loan.book.id : null;
 
-        if (loan.state === "LOANED" || loan.state === "RESERVED") {
+        if (loan.state === "LOANED") {
+            let penaltyInfo = "";
+            if (loan.penalty > 0) {
+                penaltyInfo = `<br><span style="color:red; font-weight:bold;">KARA: ${loan.penalty} PLN</span>`;
+            }
+            
+            let extendBtn = "";
+            if (!loan.extended) {
+                extendBtn = `<button class="btn-small" onclick="extendLoan(${loan.id})">Przedłuż (+14 dni)</button>`;
+            } else {
+                extendBtn = `<span style="font-size:0.8em; color:gray;">(Przedłużono)</span>`;
+            }
+
             div.innerHTML = `
                 <div class="loan-info">
                     <strong>${bookTitle}</strong> <br>
-                    Status: ${loan.state} | Data: ${loan.loanDate || loan.reservationDate}
+                    Termin: ${loan.dueDate} ${penaltyInfo}
                 </div>
-                <button class="btn-small" onclick="returnBook(${loan.id})">Zwróć</button>
+                <div>
+                    ${extendBtn}
+                    <button class="btn-small" onclick="returnBook(${loan.id})">Zwróć</button>
+                </div>
+            `;
+            activeList.appendChild(div);
+        } else if (loan.state === "RESERVED") {
+             div.innerHTML = `
+                <div class="loan-info">
+                    <strong>${bookTitle}</strong> <br>
+                    Status: ZAREZERWOWANA (Data: ${loan.reservationDate})
+                </div>
+                <button class="btn-small" onclick="returnBook(${loan.id})">Anuluj</button>
             `;
             activeList.appendChild(div);
         } else if (loan.state === "RETURNED") {
@@ -172,46 +195,24 @@ function renderMyLoans(loans) {
     });
 }
 
-// --- REVIEWS ---
+// --- ACTIONS ---
 
-document.getElementById("btnViewReviews").addEventListener("click", async () => {
-    const bookId = document.getElementById("viewReviewsBookSelect").value;
-    if(!bookId) { alert("Wybierz książkę"); return; }
+window.extendLoan = async function(loanId) {
+    if(!confirm("Czy chcesz przedłużyć wypożyczenie o 14 dni?")) return;
     
-    const response = await fetch(`${API}/reviews/book/${bookId}`, { headers: getAuthHeaders() });
-    const container = document.getElementById("bookReviewsList");
-    container.innerHTML = "Ładowanie...";
-    
+    const response = await fetch(`${API}/loans/extend/${loanId}`, {
+        method: "POST",
+        headers: getAuthHeaders()
+    });
+
     if(response.ok) {
-        const reviews = await response.json();
-        container.innerHTML = "";
-        
-        if(reviews.length === 0) {
-            container.innerHTML = "<p>Brak recenzji dla tej książki.</p>";
-            return;
-        }
-        
-        reviews.forEach(review => {
-            const div = document.createElement("div");
-            div.className = "review-item";
-            // Gwiazdki jako tekst
-            const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
-            
-            div.innerHTML = `
-                <div class="review-content">
-                    <div class="review-header">
-                        <span class="review-rating">${stars}</span> 
-                        przez ${review.user ? review.user.userName : "Anonim"}
-                    </div>
-                    <p>${review.comment}</p>
-                </div>
-            `;
-            container.appendChild(div);
-        });
+        alert("Przedłużono!");
+        loadMyLoans();
     } else {
-        container.innerText = "Błąd pobierania recenzji.";
+        const text = await response.text();
+        alert("Błąd: " + text);
     }
-});
+};
 
 window.returnBook = async function(loanId) {
     if(!confirm("Czy na pewno chcesz zwrócić tę książkę?")) return;
@@ -237,6 +238,46 @@ window.openReviewForm = function(bookId, bookTitle) {
     document.getElementById("reviewRating").value = "";
     document.getElementById("reviewComment").value = "";
 };
+
+// --- REVIEWS ---
+
+document.getElementById("btnViewReviews").addEventListener("click", async () => {
+    const bookId = document.getElementById("viewReviewsBookSelect").value;
+    if(!bookId) { alert("Wybierz książkę"); return; }
+    
+    const response = await fetch(`${API}/reviews/book/${bookId}`, { headers: getAuthHeaders() });
+    const container = document.getElementById("bookReviewsList");
+    container.innerHTML = "Ładowanie...";
+    
+    if(response.ok) {
+        const reviews = await response.json();
+        container.innerHTML = "";
+        
+        if(reviews.length === 0) {
+            container.innerHTML = "<p>Brak recenzji dla tej książki.</p>";
+            return;
+        }
+        
+        reviews.forEach(review => {
+            const div = document.createElement("div");
+            div.className = "review-item";
+            const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
+            
+            div.innerHTML = `
+                <div class="review-content">
+                    <div class="review-header">
+                        <span class="review-rating">${stars}</span> 
+                        przez ${review.user ? review.user.userName : "Anonim"}
+                    </div>
+                    <p>${review.comment}</p>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    } else {
+        container.innerText = "Błąd pobierania recenzji.";
+    }
+});
 
 document.getElementById("btnAddReview").addEventListener("click", async () => {
     const bookId = document.getElementById("reviewBookId").value;

@@ -3,6 +3,8 @@ package pl.agh.edu.library.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "loans")
@@ -15,7 +17,12 @@ public class Loan {
     private Date reservationDate;
     private Date loanDate;
     private Date returnDate;
-    private Date dueDate; // <-- Termin zwrotu
+    private Date dueDate;
+    
+    private boolean extended = false; // Czy przedłużono?
+
+    @Transient // Pole nie zapisywane w bazie, obliczane w locie
+    private double penalty = 0.0;
     
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -26,6 +33,7 @@ public class Loan {
     private Book book;
 
     public Loan() {}
+
 
     public Integer getId() {
         return id;
@@ -73,6 +81,33 @@ public class Loan {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public boolean isExtended() {
+        return extended;
+    }
+
+    public void setExtended(boolean extended) {
+        this.extended = extended;
+    }
+
+    public double getPenalty() {
+        // Obliczanie kary w locie
+        if ("LOANED".equals(state) && dueDate != null) {
+            LocalDate due = dueDate.toLocalDate();
+            LocalDate now = LocalDate.now();
+            
+            if (now.isAfter(due)) {
+                long daysOverdue = ChronoUnit.DAYS.between(due, now);
+                double calculatedPenalty = daysOverdue * 0.50;
+                return Math.min(calculatedPenalty, 70.0); // Max 70 PLN
+            }
+        }
+        return 0.0;
+    }
+
+    public void setPenalty(double penalty) {
+        this.penalty = penalty;
     }
 
     public User getUser() {

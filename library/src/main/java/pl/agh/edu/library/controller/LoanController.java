@@ -33,6 +33,7 @@ public class LoanController {
             throw new RuntimeException("Not authenticated");
         }
         String username = auth.getName();
+        System.out.println("LoanController: Getting loans for user: " + username);
         return userService.getUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Logged user not found in DB: " + username));
     }
@@ -58,6 +59,16 @@ public class LoanController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @PostMapping("/extend/{loanId}")
+    public ResponseEntity<?> extendLoan(@PathVariable Long loanId) {
+        try {
+            Loan loan = loanService.extendLoan(loanId);
+            return ResponseEntity.ok(loan);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @PostMapping("/return/{loanId}")
     public ResponseEntity<Loan> returnBook(@PathVariable Long loanId) {
@@ -74,11 +85,16 @@ public class LoanController {
     }
     
     @GetMapping("/my")
-    public List<Loan> getMyLoans() {
-        User user = getLoggedUser();
-        // Filtrujemy po stronie Javy (można też dodać metodę w repozytorium)
-        return loanService.getAllLoans().stream()
-                .filter(loan -> loan.getUser().getId().equals(user.getId()))
-                .collect(Collectors.toList());
+    public ResponseEntity<?> getMyLoans() {
+        try {
+            User user = getLoggedUser();
+            List<Loan> myLoans = loanService.getAllLoans().stream()
+                    .filter(loan -> loan.getUser().getId().equals(user.getId()))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(myLoans);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
+        }
     }
 }

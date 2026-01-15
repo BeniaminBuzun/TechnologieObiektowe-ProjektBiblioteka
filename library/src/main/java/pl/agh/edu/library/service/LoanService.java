@@ -58,8 +58,26 @@ public class LoanService {
         loan.setBook(book);
         loan.setState("LOANED");
         loan.setLoanDate(Date.valueOf(LocalDate.now()));
-        // Ustawiamy termin zwrotu na 14 dni
-        loan.setDueDate(Date.valueOf(LocalDate.now().plusDays(14)));
+        loan.setDueDate(Date.valueOf(LocalDate.now().plusDays(14))); // 14 dni na zwrot
+        
+        return loanRepository.save(loan);
+    }
+    
+    public Loan extendLoan(Long loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found"));
+        
+        if (!"LOANED".equals(loan.getState())) {
+            throw new RuntimeException("Można przedłużyć tylko aktywne wypożyczenie.");
+        }
+        
+        if (loan.isExtended()) {
+            throw new RuntimeException("To wypożyczenie było już przedłużane.");
+        }
+        
+        // Przedłużamy o kolejne 14 dni od obecnego terminu
+        LocalDate newDueDate = loan.getDueDate().toLocalDate().plusDays(14);
+        loan.setDueDate(Date.valueOf(newDueDate));
+        loan.setExtended(true);
         
         return loanRepository.save(loan);
     }
