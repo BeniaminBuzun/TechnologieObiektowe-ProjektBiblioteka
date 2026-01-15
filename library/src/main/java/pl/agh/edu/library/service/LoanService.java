@@ -43,7 +43,6 @@ public class LoanService {
     public Loan loanBook(Long userId, Long bookId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         
-        // --- SPRAWDZENIE LIMITU ---
         long activeLoansCount = user.getLoans().stream()
                 .filter(l -> "LOANED".equals(l.getState()))
                 .count();
@@ -51,7 +50,6 @@ public class LoanService {
         if (activeLoansCount >= 10) {
             throw new RuntimeException("Osiągnięto limit 10 wypożyczonych książek!");
         }
-        // --------------------------
 
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -60,6 +58,8 @@ public class LoanService {
         loan.setBook(book);
         loan.setState("LOANED");
         loan.setLoanDate(Date.valueOf(LocalDate.now()));
+        // Ustawiamy termin zwrotu na 14 dni
+        loan.setDueDate(Date.valueOf(LocalDate.now().plusDays(14)));
         
         return loanRepository.save(loan);
     }

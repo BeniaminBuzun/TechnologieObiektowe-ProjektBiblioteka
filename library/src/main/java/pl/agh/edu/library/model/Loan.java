@@ -15,6 +15,7 @@ public class Loan {
     private Date reservationDate;
     private Date loanDate;
     private Date returnDate;
+    private Date dueDate; // <-- Termin zwrotu
     
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -64,6 +65,14 @@ public class Loan {
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public User getUser() {
