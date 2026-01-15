@@ -5,13 +5,20 @@
   <title>Ksiegarnia Liber</title>
   <script defer src="app.js"></script>
   <style>
-    body { font-family: Arial; max-width: 600px; margin: 20px auto; }
+    body { font-family: Arial; max-width: 800px; margin: 20px auto; }
     form { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; }
-    input { display: block; width: 100%; margin: 8px 0; padding: 8px; box-sizing: border-box;}
+    input, textarea, select { display: block; width: 100%; margin: 8px 0; padding: 8px; box-sizing: border-box;}
     button { padding: 8px 12px; cursor: pointer; margin-right: 5px; }
     #dashboard { display: none; border: 1px solid #333; padding: 15px; background-color: #f9f9f9; }
     .action-group { margin-top: 20px; padding: 10px; border: 1px dashed #666; }
     pre { background: #eee; padding: 10px; overflow-x: auto; }
+    
+    .loan-item, .review-item { border-bottom: 1px solid #ddd; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; }
+    .review-content { flex-grow: 1; }
+    .review-header { font-weight: bold; font-size: 0.9em; color: #555; }
+    .review-rating { color: #e67e22; font-weight: bold; }
+    .loan-info { flex-grow: 1; }
+    .btn-small { font-size: 0.8em; padding: 4px 8px; }
   </style>
 </head>
 
@@ -25,7 +32,7 @@
     <input type="text" id="regName" placeholder="Name" required />
     <input type="email" id="regEmail" placeholder="Email" required />
     <input type="password" id="regPassword" placeholder="Password" required />
-    <input type="text" id="regRole" placeholder="Role (e.g., USER)" required />
+    <input type="text" id="regRole" placeholder="Role (e.g., USER or ADMIN)" required />
     <button type="submit">Register</button>
   </form>
 
@@ -43,24 +50,46 @@
   <button id="logoutBtn">Logout</button>
 
   <div class="action-group">
-    <h3>Test Wypożyczeń / Rezerwacji</h3>
-    <p><small>Podaj ID użytkownika i ID książki (muszą istnieć w bazie)</small></p>
-    <input type="number" id="loanUserId" placeholder="User ID (np. 1)" />
-    <input type="number" id="loanBookId" placeholder="Book ID (np. 1)" />
-    
+    <h3>Wypożycz / Zarezerwuj Książkę</h3>
+    <select id="loanBookSelect">
+        <option value="">-- Wybierz książkę --</option>
+    </select>
     <br>
-    <button id="btnReserve">Zarezerwuj (Reserve)</button>
-    <button id="btnLoan">Wypożycz (Loan)</button>
+    <button id="btnReserve">Zarezerwuj</button>
+    <button id="btnLoan">Wypożycz</button>
   </div>
 
   <div class="action-group">
-    <h3>Zwrot książki</h3>
-    <input type="number" id="returnLoanId" placeholder="Loan ID (ID wypożyczenia)" />
-    <button id="btnReturn">Zwróć (Return)</button>
+    <h3>Twoje Aktywne Wypożyczenia (Do zwrotu)</h3>
+    <div id="myActiveLoansList">Ładowanie...</div>
   </div>
 
   <div class="action-group">
-    <h3>Lista wszystkich wypożyczeń</h3>
+    <h3>Twoja Historia (Do oceny)</h3>
+    <div id="myHistoryList">Ładowanie...</div>
+    
+    <div id="reviewForm" style="display:none; margin-top: 10px; border: 1px solid #aaa; padding: 10px; background: #fff;">
+        <h4>Dodaj recenzję dla: <span id="reviewBookTitle"></span></h4>
+        <input type="hidden" id="reviewBookId" />
+        <input type="number" id="reviewRating" placeholder="Ocena (1-5)" min="1" max="5" />
+        <textarea id="reviewComment" placeholder="Twój komentarz..."></textarea>
+        <button id="btnAddReview">Zapisz Recenzję</button>
+        <button onclick="document.getElementById('reviewForm').style.display='none'">Anuluj</button>
+    </div>
+  </div>
+
+  <div class="action-group">
+    <h3>Przeglądaj Recenzje</h3>
+    <p><small>Wybierz książkę, aby zobaczyć co sądzą o niej inni.</small></p>
+    <select id="viewReviewsBookSelect">
+        <option value="">-- Wybierz książkę --</option>
+    </select>
+    <button id="btnViewReviews">Pokaż Recenzje</button>
+    <div id="bookReviewsList" style="margin-top: 10px;"></div>
+  </div>
+
+  <div class="action-group">
+    <h3>Lista wszystkich wypożyczeń (ADMIN)</h3>
     <button id="btnListLoans">Odśwież listę</button>
     <pre id="loansOutput">Brak danych...</pre>
   </div>

@@ -26,15 +26,10 @@ public class LoginController {
         if(userRepository.existsByUserName(loginRequest.userName)){
             User user = userRepository.findByUserName(loginRequest.userName);
             if (user.checkPassword(loginRequest.password)) {
-                return jwtUtil.generateToken(loginRequest.userName);
+                //Przekazujemy rolę użytkownika z bazy
+                return jwtUtil.generateToken(loginRequest.userName, user.getRole());
             }
         }
         return "wrong username or password";
     }
-    //    public Map<String, String> token(@ (name = "user", defaultValue = "guest") String user) {
-    //        String token = jwtUtil.generateToken(user);
-    //        return Map.of("token", token);
-    //    }
-
-
 }

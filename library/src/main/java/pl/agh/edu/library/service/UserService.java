@@ -29,6 +29,10 @@ public class UserService {
     public Optional<User> getUser(Long id) {
         return userRepository.findById(id);
     }
+    
+    public Optional<User> getUserByUsername(String username) {
+        return Optional.ofNullable(userRepository.findByUserName(username));
+    }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);

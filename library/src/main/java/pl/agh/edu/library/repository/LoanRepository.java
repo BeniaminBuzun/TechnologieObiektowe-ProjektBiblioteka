@@ -6,4 +6,7 @@ import pl.agh.edu.library.model.User;
 
 public interface LoanRepository extends JpaRepository<Loan,Long> {
     long countByUserAndState(User user, String state);
+    
+    //do recezji
+    boolean existsByUser_IdAndBook_IdAndState(Integer userId, Integer bookId, String state);
 }
