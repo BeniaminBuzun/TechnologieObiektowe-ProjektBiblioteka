@@ -49,11 +49,16 @@ public class StatsController {
         return result;
     }
     @GetMapping("/user-penalties")
-    public Map<User,Integer> getUserPenalties() {
+    public Map<User,Double> getUserPenalties() {
         List<Loan> loans = loanService.getAllLoans();
-        Map<User,Integer> result = new HashMap<>();
+        Map<User,Double> result = new HashMap<>();
         for (Loan loan:loans){
-            result.merge(loan.getUser(), 1, Integer::sum);
+            if (!result.containsKey(loan.getUser())){
+                result.put(loan.getUser(),loan.getPenalty());
+            }else{
+                result.merge(loan.getUser(), result.get(loan.getUser())+1, Double::sum);
+            }
+//            result.merge(loan.getUser(), 1, Integer::sum);
         }
         return result;
     }
