@@ -92,4 +92,8 @@ public class LoanService {
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();
     }
+    public List<Loan> getLoansById(int id) {
+        return loanRepository.findAll();
+    }
+
 }

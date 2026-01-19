@@ -46,8 +46,8 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    public List<Review> getReviewsForBook(Long bookId) {
+    public List<Review> getReviewsForBook(Integer bookId) {
         // Rzutowanie Long na Integer
-        return reviewRepository.findByBookId(bookId.intValue());
+        return reviewRepository.findByBookId(bookId);
     }
 }

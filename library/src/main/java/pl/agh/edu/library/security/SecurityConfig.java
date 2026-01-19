@@ -44,7 +44,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
 
                         // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)
-                        .anyRequest().authenticated()
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+
                 );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
