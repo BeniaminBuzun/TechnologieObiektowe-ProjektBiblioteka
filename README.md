@@ -12,6 +12,7 @@ pl.agh.edu.library
 ├── controller
 │   ├── BookController
 │   ├── CategoryController
+│   ├── StatContorller
 │   ├── LoanController
 │   ├── LoginController
 │   └── UserController
@@ -54,6 +55,7 @@ Kontrolery
 
 [LoginController](#LoginController)
 
+[StatController](#StatController)
 
 ## UserController
 ```
@@ -340,6 +342,79 @@ lub
 ```
 200 OK + "wrong username or password"
 ```
+## StatsController
+```
+Base URL: /api/stats
+Dependencies: loanService, bookService ,reviewService
+```
+
+Endpointy:
+
+
+Statystyki wypożyczeń ksoążek
+```
+GET /api/stats/book-loans
+```
+
+Zwraca statystyki wypożyczeń książek:
+
+Zwracany typ:
+```
+Map<Book, Integer>
+```
+
+
+Statystyki wypożyczeń użytkowników
+```
+GET /api/stats/user-loans
+```
+
+Zwraca liczbę wypożyczeń per użytkownik:
+
+Zwracany typ:
+```
+Map<User, Integer>
+```
+
+
+Statystyki kar nałożonych na użytkowników
+```
+GET /api/stats/user-penalties
+```
+
+Zwraca liczbę naliczonych kar użytkownikom.
+
+
+Zwracany typ:
+```
+Map<User,Double>
+```
+
+
+Statystyki ocen książek
+```
+GET /api/stats/books-ratings
+```
+
+Zwraca średnią ocenę dla każdej książki.
+
+Zwracany typ:
+```
+Map<Book, Double>
+```
+
+
+Statystyki wypożyczanych kategorii
+```
+GET /api/stats/category-loans
+```
+
+Zwraca popularność kategorii na podstawie wypożyczeń.
+
+Zwracany typ:
+```
+Map<Category, Integer>
+```
 
 ## Security
 
@@ -470,6 +545,7 @@ Tabela ```categories```
 | id    | Integer   | Klucz główny        |
 | name  | String    | Nazwa kategorii     |
 | books | Set<Book> | Książki w kategorii |
+
 
 
 
