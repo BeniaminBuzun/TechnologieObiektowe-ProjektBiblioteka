@@ -37,6 +37,9 @@ pl.agh.edu.library
 │   ├── Loan
 │   ├── Book
 │   └── Category
+|
+├── scheduler
+|   └── LoanScheduler
 │
 └── repository
     └── UserRepository
@@ -56,6 +59,10 @@ Kontrolery
 [LoginController](#LoginController)
 
 [StatController](#StatController)
+
+Schedulery
+
+[LoanScheduler](#LoanScheduler)
 
 ## UserController
 ```
@@ -421,6 +428,12 @@ Map<Category, Integer>
 System Autoryzacji użytkowników przechowywany jest w katalogu security.
 Jest on oparty na systemie SpringSecurity wykorzystując tokeny JWT
 
+Schedulery:
+
+## LoanScheduler
+```
+Sprawdza daty wypożyczenia i w przypadku zbliżania się terminy oddania książki, próbuje wysłać powiadomienie e-mail
+```
 
 ## JwtFilter
 ```
@@ -545,6 +558,7 @@ Tabela ```categories```
 | id    | Integer   | Klucz główny        |
 | name  | String    | Nazwa kategorii     |
 | books | Set<Book> | Książki w kategorii |
+
 
 
 
