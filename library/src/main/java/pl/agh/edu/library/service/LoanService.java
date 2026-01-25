@@ -39,6 +39,14 @@ public class LoanService {
         
         return loanRepository.save(loan);
     }
+    public Loan LoanReserved(Long loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found"));
+        loan.setState("LOANED");
+        loan.setReservationDate(Date.valueOf(LocalDate.now()));
+
+        return loanRepository.save(loan);
+    }
+
 
     public Loan loanBook(Long userId, Long bookId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));

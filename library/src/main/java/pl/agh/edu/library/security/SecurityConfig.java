@@ -43,9 +43,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/categories").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
 
-                        // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)
-//                        .anyRequest().authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll() // Rejestracja
+                        .requestMatchers(HttpMethod.GET, "/library").permitAll() // Przeglądanie książek
+                        .requestMatchers(HttpMethod.GET, "/myAccount").permitAll() // Przegladanie kategorii
+
+                                // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)
+                        .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
 
                 );
 

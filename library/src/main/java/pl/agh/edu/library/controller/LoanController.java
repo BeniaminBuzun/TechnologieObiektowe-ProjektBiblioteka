@@ -59,7 +59,16 @@ public class LoanController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+    @PostMapping("/loan-reservation")
+    public ResponseEntity<?> LoanReservation(@RequestParam Long loanId) {
+        try {
+            Loan loan = loanService.LoanReserved(loanId);
+            return ResponseEntity.ok(loan);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/extend/{loanId}")
     public ResponseEntity<?> extendLoan(@PathVariable Long loanId) {
         try {
@@ -90,6 +99,8 @@ public class LoanController {
             User user = getLoggedUser();
             List<Loan> myLoans = loanService.getAllLoans().stream()
                     .filter(loan -> loan.getUser().getId().equals(user.getId()))
+                    .filter(loan -> !loan.getState().equals("RETURNED"))
+
                     .collect(Collectors.toList());
             return ResponseEntity.ok(myLoans);
         } catch (Exception e) {
