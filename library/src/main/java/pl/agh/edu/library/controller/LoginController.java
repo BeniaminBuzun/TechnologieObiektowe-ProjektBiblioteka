@@ -7,6 +7,7 @@ import pl.agh.edu.library.model.User;
 import pl.agh.edu.library.repository.UserRepository;
 import pl.agh.edu.library.security.JwtUtil;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,4 +33,9 @@ public class LoginController {
         }
         return "wrong username or password";
     }
+//    @GetMapping("/role")
+//    public List<User> getRole(@RequestParam Long userId) {
+//        return userRepository.findById(userId);
+//    }
+
 }

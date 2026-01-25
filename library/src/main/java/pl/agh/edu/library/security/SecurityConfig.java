@@ -46,6 +46,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/").permitAll() // Rejestracja
                         .requestMatchers(HttpMethod.GET, "/library").permitAll() // Przeglądanie książek
                         .requestMatchers(HttpMethod.GET, "/myAccount").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/logout").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/admin/user-penalties").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/admin/**").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/viewDetails/**").permitAll() // Przegladanie kategorii
 
                                 // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)
                         .anyRequest().authenticated()
