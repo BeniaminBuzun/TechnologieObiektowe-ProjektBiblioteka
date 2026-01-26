@@ -28,6 +28,7 @@ public class UserService {
     }
     public void addNewUser(UserCreationDto userDto) {
         User user = new User();
+        user.setUserName(userDto.userName);
         user.setFirstName(userDto.firstName);
         user.setLastName(userDto.lastName);
         user.setPassword(userDto.password);

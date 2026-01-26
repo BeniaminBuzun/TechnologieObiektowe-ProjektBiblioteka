@@ -52,8 +52,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/viewDetails/**").permitAll() // Przegladanie kategorii
 
                                 // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)
-//                        .anyRequest().authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
 
                 );
 

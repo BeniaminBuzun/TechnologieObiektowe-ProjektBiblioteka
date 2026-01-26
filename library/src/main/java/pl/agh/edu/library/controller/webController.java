@@ -6,9 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
-//spagetti skopiowanego kodu
 @Controller
 class WebController {
 
@@ -80,8 +77,6 @@ class WebController {
                         const base = `token=${encoded}; Path=/; SameSite=Lax; Max-Age=86400`;
                         const secure = location.protocol === 'https:' ? '; Secure' : '';
                         document.cookie = base + secure;
-                        window.location.replace("/library");
-                
                       }
 
                       function looksLikeJwt(text) {
