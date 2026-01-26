@@ -3,6 +3,7 @@ package pl.agh.edu.library.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.agh.edu.library.dto.UserCreationDto;
 import pl.agh.edu.library.model.User;
 import pl.agh.edu.library.service.UserService;
 
@@ -24,9 +25,10 @@ public class UserController {
         return userService.getUsers();
     }
 
+
     @PostMapping
-    public void addUser(@RequestBody User user) {
-        userService.addUser(user);
+    public void addUser(@RequestBody UserCreationDto user) {
+        userService.addNewUser(user);
     }
 
     @GetMapping("/{id}")

@@ -7,6 +7,7 @@ import pl.agh.edu.library.model.User;
 import pl.agh.edu.library.repository.UserRepository;
 import pl.agh.edu.library.security.JwtUtil;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,15 +27,15 @@ public class LoginController {
         if(userRepository.existsByUserName(loginRequest.userName)){
             User user = userRepository.findByUserName(loginRequest.userName);
             if (user.checkPassword(loginRequest.password)) {
-                return jwtUtil.generateToken(loginRequest.userName);
+                //Przekazujemy rolę użytkownika z bazy
+                return jwtUtil.generateToken(loginRequest.userName, user.getRole());
             }
         }
         return "wrong username or password";
     }
-    //    public Map<String, String> token(@ (name = "user", defaultValue = "guest") String user) {
-    //        String token = jwtUtil.generateToken(user);
-    //        return Map.of("token", token);
-    //    }
-
+//    @GetMapping("/role")
+//    public List<User> getRole(@RequestParam Long userId) {
+//        return userRepository.findById(userId);
+//    }
 
 }

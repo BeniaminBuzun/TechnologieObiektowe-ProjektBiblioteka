@@ -35,20 +35,25 @@ public class JwtFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
         }
 
-        if (token != null && jwtUtil.validateToken(token) &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (token != null && jwtUtil.validateToken(token)) {
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                String username = jwtUtil.getUsernameFromToken(token);
+                List<String> roles = jwtUtil.getRolesFromToken(token);
+                
+                System.out.println("JWT Filter: User " + username + " roles: " + roles);
 
-            String username = jwtUtil.getUsernameFromToken(token);
-            List<String> roles = jwtUtil.getRolesFromToken(token);
+                List<SimpleGrantedAuthority> authorities = roles.stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                        .collect(Collectors.toList());
 
-            // Convert roles to GrantedAuthority objects
-            List<SimpleGrantedAuthority> authorities = roles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                    .collect(Collectors.toList());
-
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(username, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(username, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        } else {
+            if (authHeader != null) {
+                System.out.println("JWT Filter: Invalid token or header: " + authHeader);
+            }
         }
 
         filterChain.doFilter(request, response);

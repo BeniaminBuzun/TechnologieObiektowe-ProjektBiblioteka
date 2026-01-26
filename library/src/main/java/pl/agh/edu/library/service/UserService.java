@@ -2,6 +2,7 @@ package pl.agh.edu.library.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.agh.edu.library.dto.UserCreationDto;
 import pl.agh.edu.library.model.User;
 import pl.agh.edu.library.repository.UserRepository;
 
@@ -25,9 +26,23 @@ public class UserService {
     public void addUser(User user) {
         userRepository.save(user);
     }
+    public void addNewUser(UserCreationDto userDto) {
+        User user = new User();
+        user.setUserName(userDto.userName);
+        user.setFirstName(userDto.firstName);
+        user.setLastName(userDto.lastName);
+        user.setPassword(userDto.password);
+        user.setEmail(userDto.email);
+        user.setRole("USER");
+        userRepository.save(user);
+    }
 
     public Optional<User> getUser(Long id) {
         return userRepository.findById(id);
+    }
+    
+    public Optional<User> getUserByUsername(String username) {
+        return Optional.ofNullable(userRepository.findByUserName(username));
     }
 
     public void deleteUser(Long id) {

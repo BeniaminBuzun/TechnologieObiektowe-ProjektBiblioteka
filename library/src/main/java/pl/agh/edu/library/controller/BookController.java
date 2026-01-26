@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.agh.edu.library.model.Book;
 import pl.agh.edu.library.service.BookService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,11 +23,22 @@ public class BookController {
 	public List<Book> getBooks() {
 		return bookService.getBooks();
 	}
+    
+    @GetMapping("/available")
+    public List<Book> getAvailableBooks() {
+        return bookService.getAvailableBooks();
+    }
 
 	@PostMapping
-	public void addUser(@RequestBody Book book) {
+	public void addBook(@RequestBody Book book) {
 		bookService.addBook(book);
 	}
+    @PostMapping("/multiple")
+    public void addBooks(@RequestBody ArrayList<Book> books) {
+        for (Book book : books) {
+            bookService.addBook(book);
+        };
+    }
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Book> getBook(@PathVariable Long id) {
@@ -51,11 +63,6 @@ public class BookController {
 					return ResponseEntity.ok(book);
 				})
 				.orElse(ResponseEntity.notFound().build());
-	}
-
-	@PostMapping("/{bookId}/categories/{categoryId}")
-	public void addCategory(@PathVariable Long bookId, @PathVariable Long categoryId) {
-		bookService.addCategoryToBook(bookId, categoryId);
 	}
 
 }

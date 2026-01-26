@@ -39,11 +39,18 @@ public class LoanService {
         
         return loanRepository.save(loan);
     }
+    public Loan LoanReserved(Long loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found"));
+        loan.setState("LOANED");
+        loan.setReservationDate(Date.valueOf(LocalDate.now()));
+
+        return loanRepository.save(loan);
+    }
+
 
     public Loan loanBook(Long userId, Long bookId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         
-        // --- SPRAWDZENIE LIMITU ---
         long activeLoansCount = user.getLoans().stream()
                 .filter(l -> "LOANED".equals(l.getState()))
                 .count();
@@ -51,7 +58,6 @@ public class LoanService {
         if (activeLoansCount >= 10) {
             throw new RuntimeException("Osiągnięto limit 10 wypożyczonych książek!");
         }
-        // --------------------------
 
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -60,6 +66,26 @@ public class LoanService {
         loan.setBook(book);
         loan.setState("LOANED");
         loan.setLoanDate(Date.valueOf(LocalDate.now()));
+        loan.setDueDate(Date.valueOf(LocalDate.now().plusDays(14))); // 14 dni na zwrot
+        
+        return loanRepository.save(loan);
+    }
+    
+    public Loan extendLoan(Long loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found"));
+        
+        if (!"LOANED".equals(loan.getState())) {
+            throw new RuntimeException("Można przedłużyć tylko aktywne wypożyczenie.");
+        }
+        
+        if (loan.isExtended()) {
+            throw new RuntimeException("To wypożyczenie było już przedłużane.");
+        }
+        
+        // Przedłużamy o kolejne 14 dni od obecnego terminu
+        LocalDate newDueDate = loan.getDueDate().toLocalDate().plusDays(14);
+        loan.setDueDate(Date.valueOf(newDueDate));
+        loan.setExtended(true);
         
         return loanRepository.save(loan);
     }
@@ -74,4 +100,8 @@ public class LoanService {
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();
     }
+    public List<Loan> getLoansById(int id) {
+        return loanRepository.findAll();
+    }
+
 }

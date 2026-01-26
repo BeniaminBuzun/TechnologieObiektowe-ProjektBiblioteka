@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/account/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Rejestracja
                         .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll() // Przeglądanie książek
-						.requestMatchers(HttpMethod.GET, "/api/categories").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/api/categories").permitAll() // Przegladanie kategorii
 
                         // 2. Zasoby tylko dla ADMINA
                         .requestMatchers(HttpMethod.POST, "/api/books").hasRole("ADMIN")
@@ -40,11 +40,24 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/loans").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.POST, "/api/categories").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/categories").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/stats/**").hasRole("ADMIN")
 
-                        // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/").permitAll() // Rejestracja
+                        .requestMatchers(HttpMethod.GET, "/library").permitAll() // Przeglądanie książek
+                        .requestMatchers(HttpMethod.GET, "/myAccount").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/logout").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/admin/user-penalties").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/admin/**").permitAll() // Przegladanie kategorii
+						.requestMatchers(HttpMethod.GET, "/admin.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/viewDetails/**").permitAll() // Przegladanie kategorii
+                        .requestMatchers(HttpMethod.GET, "/admin/user-loans").permitAll() // Przegladanie kategorii
+
+                                // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)
                         .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
+
                 );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

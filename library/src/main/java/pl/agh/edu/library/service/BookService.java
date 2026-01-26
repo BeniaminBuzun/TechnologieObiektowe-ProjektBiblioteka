@@ -8,6 +8,7 @@ import pl.agh.edu.library.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -23,6 +24,12 @@ public class BookService {
 	public List<Book> getBooks() {
 		return bookRepository.findAll();
 	}
+    
+    public List<Book> getAvailableBooks() {
+        return bookRepository.findAll().stream()
+                .filter(book -> book.getQuantity() > 0)
+                .collect(Collectors.toList());
+    }
 
 	public void addBook(Book book) {
 		bookRepository.save(book);
