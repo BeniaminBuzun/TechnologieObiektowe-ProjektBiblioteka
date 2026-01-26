@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/logout").permitAll() // Przegladanie kategorii
                         .requestMatchers(HttpMethod.GET, "/admin/user-penalties").permitAll() // Przegladanie kategorii
                         .requestMatchers(HttpMethod.GET, "/admin/**").permitAll() // Przegladanie kategorii
+						.requestMatchers(HttpMethod.GET, "/admin.html").permitAll()
                         .requestMatchers(HttpMethod.GET, "/viewDetails/**").permitAll() // Przegladanie kategorii
 
                                 // 3. Reszta (np. wypożyczanie) wymaga bycia zalogowanym (USER lub ADMIN)

@@ -24,10 +24,6 @@ public class TestController {
 //        String token = jwtUtil.generateToken(user);
 //        return Map.of("token", token);
 //    }
-    @GetMapping("/admin")
-    public String Admin(){
-        return "admin";
-    }
     // protected endpoint, requires Authorization: Bearer <token>
     @GetMapping("/secure")
     public Map<String, String> secure(Authentication authentication) {

@@ -602,6 +602,139 @@ class WebController {
                 .build();
     }
 
+	@GetMapping(value="/admin", produces=MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> adminMenu() {
+		String html = """
+				<!doctype html>
+				<html lang="en">
+				  <head>
+				    <meta charset="utf-8" />
+				    <meta name="viewport" content="width=device-width, initial-scale=1" />
+				    <title>Admin menu</title>
+				    <style>
+				      body {
+				        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+				        margin: 0;
+				        background: #0b1220;
+				        color: #e5e7eb;
+				      }
+				      header {
+				        padding: 1.25rem 1.5rem;
+				        border-bottom: 1px solid #243042;
+				        background: #111827;
+				      }
+				      main {
+				        max-width: 1100px;
+				        margin: 0 auto;
+				        padding: 1.5rem;
+				      }
+				      a {
+				        color: #93c5fd;
+				        text-decoration: none;
+				      }
+				      a:hover {
+				        text-decoration: underline;
+				      }
+				      h1 {
+				        margin: 0;
+				        font-size: 1.75rem;
+				      }
+				      p {
+				        margin: .5rem 0 0;
+				        opacity: .9;
+				      }
+				      .card {
+				        background: #111827;
+				        border: 1px solid #243042;
+				        border-radius: 14px;
+				        padding: 1.25rem;
+				      }
+				
+				      /* new styles */
+				      .grid {
+				        display: grid;
+				        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+				        gap: 1rem;
+				        margin-top: 1rem;
+				      }
+				      .dir {
+				        display: block;
+				        padding: 1rem 1.1rem;
+				        border-radius: 12px;
+				        border: 1px solid #243042;
+				        background: #0b1220;
+				        transition: border-color .15s, background .15s, transform .05s;
+				      }
+				      .dir:hover {
+				        background: #0f172a;
+				        border-color: #3b82f6;
+				        transform: translateY(-1px);
+				      }
+				      .dir-title {
+				        font-weight: 600;
+				        font-size: 1.05rem;
+				        margin-bottom: .25rem;
+				      }
+				      .dir-desc {
+				        font-size: .9rem;
+				        opacity: .85;
+				      }
+				      .muted {
+				        opacity: .75;
+				      }
+				    </style>
+				  </head>
+				
+				  <body>
+				    <header>
+				      <h1>Admin panel</h1>
+				      <p>
+				        <a href="/">Login</a> ·
+				        <a href="/library">Library</a> ·
+				        <a href="/myAccount">My account</a> ·
+				        <a href="/logout">Logout</a>
+				      </p>
+				    </header>
+				
+				    <main>
+				      <div class="card">
+				        <p class="muted">Administrative sections and tools</p>
+				
+				        <div class="grid">
+				          <a class="dir" href="/admin/stats">
+				            <div class="dir-title">Statystyki</div>
+				            <div class="dir-desc">Strona zawierająca statystyki</div>
+				          </a>
+				
+				          <a class="dir" href="/admin/user-loans">
+				            <div class="dir-title">Wypożyczenia</div>
+				            <div class="dir-desc">Widok na wypożyczenia użytkownikow</div>
+				          </a>
+				
+				          <a class="dir" href="/admin/user-penalties">
+				            <div class="dir-title">Kary</div>
+				            <div class="dir-desc">Kary nałożone na użytkowników</div>
+				          </a>
+				
+				          <a class="dir" href="/admin/books-ratings">
+				            <div class="dir-title">Recenzje</div>
+				            <div class="dir-desc">Widok na recenzje książek</div>
+				          </a>
+				
+				          <a class="dir" href="/admin/category-loans">
+				            <div class="dir-title">Wypożyczenia kategorii</div>
+				            <div class="dir-desc">Widok na wypożyczenia kategorii</div>
+				          </a>
+				        </div>
+				      </div>
+				    </main>
+				  </body>
+				</html>
+				
+                """;
+			return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
+	}
+
     @GetMapping(value = "/admin/stats", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> adminStatsPage() {
         String html = """
