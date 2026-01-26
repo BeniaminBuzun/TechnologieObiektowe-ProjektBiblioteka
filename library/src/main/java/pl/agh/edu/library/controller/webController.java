@@ -912,7 +912,7 @@ class WebController {
         return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
     }
 
-    @GetMapping(value = "/admin/stats/user-loans", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/admin/user-loans", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> adminUserLoansPage() {
         String html = """
                 <!doctype html>
@@ -1057,7 +1057,7 @@ class WebController {
         return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
     }
 
-    @GetMapping(value = "/admin/stats/user-penalties", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/admin/user-penalties", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> adminUserPenaltiesPage() {
         String html = """
                 <!doctype html>
@@ -1202,7 +1202,7 @@ class WebController {
         return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
     }
 
-    @GetMapping(value = "/admin/stats/books-ratings", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/admin/books-ratings", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> adminBookRatingsPage() {
         String html = """
                 <!doctype html>
@@ -1347,7 +1347,7 @@ class WebController {
         return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
     }
 
-    @GetMapping(value = "/admin/stats/category-loans", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/admin/category-loans", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> adminCategoryLoansPage() {
         String html = """
                 <!doctype html>
